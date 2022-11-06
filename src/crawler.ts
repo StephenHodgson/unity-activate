@@ -79,7 +79,7 @@ export abstract class Crawler {
         await this.page.waitForTimeout(1000);
 
         try {
-            await this.page.waitForSelector(selector, { timeout: 2000 });
+            await this.page.waitForSelector(selector, { timeout: 5000 });
             logger.debug(`  -> true`);
             return true;
         } catch (e) {
@@ -135,17 +135,17 @@ export abstract class Crawler {
     async waitForSelector(selector: string): Promise<ElementHandle | null> {
         logger.debug(`waitForSelector: ${selector}`);
 
-        return await this.page.waitForSelector(selector, { timeout: 2000 });
+        return await this.page.waitForSelector(selector, { timeout: 5000 });
     }
 
     async waitAndClick(selector: string): Promise<void> {
         logger.debug(`waitAndClick: ${selector}`);
 
-        await this.page.waitForSelector(selector, { timeout: 2000 });
-        
+        await this.page.waitForSelector(selector, { timeout: 5000 });
+
         await this.page.evaluate(s =>  {
             const element = document.querySelector(s) as HTMLElement;
-            if(element !== null) element.click() 
+            if(element !== null) element.click()
         } , selector);
     }
 

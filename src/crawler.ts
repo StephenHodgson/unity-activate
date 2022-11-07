@@ -6,7 +6,7 @@ import * as fs from 'fs';
 const logger = getLogger();
 
 export abstract class Crawler {
-    headless: boolean = false;
+    headless: boolean = true;
     page!: Page;
     tmpDir: string = "";
     downloadDir: string = "";
@@ -30,9 +30,9 @@ export abstract class Crawler {
         );
 
         this.page = (await browser.pages())[0];
-	//
-	// there can be a privilege problem to create a directory
-	//
+        //
+        // there can be a privilege problem to create a directory
+        //
         //this.tmpDir = path.join(os.tmpdir(), Math.random().toString(32).substring(2));
         this.tmpDir = path.join(".", Math.random().toString(32).substring(2));
 
@@ -143,7 +143,7 @@ export abstract class Crawler {
 
         await this.page.waitForSelector(selector, { timeout: 5000 });
 
-        await this.page.evaluate(s =>  {
+        await this.page.evaluate((s: string) =>  {
             const element = document.querySelector(s) as HTMLElement;
             if(element !== null) element.click()
         } , selector);

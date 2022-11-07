@@ -5,7 +5,7 @@ import { ElementHandle } from 'puppeteer';
 
 export interface ActivatorOptions {
     debug: boolean;
-    headful: boolean;
+    headless: boolean;
     username: string;
     password: string;
     key: string;
@@ -18,7 +18,7 @@ export class Activator extends Crawler {
     options: ActivatorOptions;
 
     constructor(options: ActivatorOptions) {
-        super(options.debug, !options.headful, options.out);
+        super(options.debug, options.headless, options.out);
         this.options = options;
         this.debug(`options:`, JSON.stringify(this.options));
     }

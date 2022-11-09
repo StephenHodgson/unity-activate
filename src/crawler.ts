@@ -1,4 +1,4 @@
-import puppeteer, { Page, ElementHandle, ClickOptions } from 'puppeteer-core';
+import puppeteer, { Page, ElementHandle, ClickOptions, BrowserFetcher } from 'puppeteer-core';
 import { getLogger } from "log4js";
 import * as path from 'path';
 import * as fs from 'fs';
@@ -28,7 +28,9 @@ export abstract class Crawler {
         if(os.platform() === 'linux') {
             chrome = '/usr/bin/google-chrome';
         } else if (os.platform() === 'win32') {
-            chrome = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
+            const browserFetcher = new BrowserFetcher({path: path.join(__dirname, '.cache', 'puppeteer'), product: 'chrome'});
+            const revisionInfo = await browserFetcher.download('1056772');
+            chrome = revisionInfo?.executablePath;
         } else if (os.platform() === 'darwin') {
             chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
         }

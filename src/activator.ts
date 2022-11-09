@@ -1,7 +1,7 @@
 import { authenticator } from 'otplib';
 import { Crawler } from './crawler';
 import fs from 'fs';
-import { ElementHandle } from 'puppeteer';
+import { ElementHandle } from 'puppeteer-core';
 
 export interface ActivatorOptions {
     debug: boolean;

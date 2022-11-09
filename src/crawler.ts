@@ -1,7 +1,8 @@
-import puppeteer, { Page, ElementHandle, ClickOptions } from 'puppeteer';
+import puppeteer, { Page, ElementHandle, ClickOptions } from 'puppeteer-core';
 import { getLogger } from "log4js";
 import * as path from 'path';
 import * as fs from 'fs';
+import os from 'os'
 
 const logger = getLogger();
 
@@ -22,9 +23,20 @@ export abstract class Crawler {
     async run(): Promise<void> {
         logger.debug(`Run crawler: headless=${this.headless}`);
 
+        let chrome = undefined;
+
+        if(os.platform() === 'linux') {
+            chrome = '/usr/bin/google-chrome';
+        } else if (os.platform() === 'win32') {
+            chrome = 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe';
+        } else if (os.platform() === 'darwin') {
+            chrome = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+        }
+
         const browser = await puppeteer.launch(
             {
                 headless: this.headless,
+                executablePath: chrome,
                 args: ['--no-sandbox', '--disable-setuid-sandbox'],
             }
         );
